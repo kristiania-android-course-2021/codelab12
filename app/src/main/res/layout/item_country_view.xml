@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_marginLeft="12dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/imageViewFlag"
+        android:layout_width="32dp"
+        android:layout_height="32dp">
+    </ImageView>
+
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/imageViewFlag"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        android:textColor="@android:color/black"
+        android:layout_centerVertical="true"
+        tools:text ="000000"
+        android:id="@+id/textViewCountryCases"
+        android:layout_width="116dp"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <TextView
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:textStyle="normal"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_toRightOf="@+id/textViewCountryCases"
+        android:layout_centerVertical="true"
+        android:id="@+id/textViewCountry"
+        android:ellipsize="end"
+        android:text ="Country Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>
