@@ -11,7 +11,6 @@ import com.learning.codelab12.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
     private val viewModel = MainViewModel()
 
     private var listAdapter = CountryListAdapter(ArrayList<CountryStats>())
