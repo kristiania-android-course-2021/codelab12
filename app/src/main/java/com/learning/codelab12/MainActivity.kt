@@ -12,7 +12,6 @@ import com.learning.codelab12.viewmodels.MainViewModel
 class MainActivity : AppCompatActivity() {
 
     private val viewModel = MainViewModel()
-
     private var listAdapter = CountryListAdapter(ArrayList<CountryStats>())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,13 +23,18 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = listAdapter
 
-        viewModel.getCountriesSummary().observe(this, { newList->
+        viewModel.liveStats.observe(this, { newList->
             listAdapter.update(newList)
         })
 
-        viewModel.getLoading().observe(this, { loading->
+        viewModel.isLoading.observe(this, { loading->
             binding.progressBar.visibility = if(loading) View.VISIBLE else View.INVISIBLE
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
     }
 }
