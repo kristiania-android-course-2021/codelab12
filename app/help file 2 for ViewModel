@@ -1,0 +1,84 @@
+
+
+
+Adding ViewModel and Repository class
+
+1. Add app gradle dependencies
+
+   // Coroutines view-model and live-data.
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+
+2. Add viewmodels package
+
+    2. 1  Add class MainViewModel
+
+    class MainViewModel : ViewModel() {
+    }
+
+    2.2 Add MutableLiveData list of CountryStats into MainViewModel
+
+    val liveStats = MutableLiveData<List<CountryStats>> (ArrayList<CountryStats>())
+
+    2.3 Add function refresh() into MainViewModel
+
+    fun refresh() {
+
+    }
+
+3 Wire up the MainViewModel with MainActivity
+
+    3.1 Implement viewModel of type MainViewModel in MainActivity
+
+    private val viewModel = MainViewModel()
+
+    3.2 Replace  listAdapter.update(DummySource().getSummary()) with following
+
+      viewModel.liveStats.observe(this, { newList->
+                listAdapter.update(newList)
+      })
+
+
+    3.3 Call view model refresh during onResume lifecycle state of MainActivity
+
+     override fun onResume() {
+            super.onResume()
+            viewModel.refresh()
+     }
+
+4. Adding Repositories package called "repos" which should be responsible for providing ViewModel required data
+
+    4.1 Add package repos
+
+    4.2 Add CovidRepo class under repos package
+
+    4.3 Implement a suspend function "getCountriesSummary" in the CovidRepo class
+
+    class CovidRepo {
+
+        suspend fun getCountriesSummary() : List<CountryStats>  {
+            return DummySource().getSummary()
+
+        }
+    }
+
+5. Wire up repo with MainView Model
+
+    private val repo = CovidRepo()
+
+    fun refresh() {
+        viewModelScope.launch  {
+            var result =  withContext(Dispatchers.IO){
+                repo.getCountriesSummary()
+            }
+            liveStats.value = result
+        }
+    }
+
+
+6. Time for running the app
+
+
+
+
