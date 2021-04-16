@@ -6,16 +6,13 @@ import com.learning.codelab12.models.CountryStats
 
 class CovidRepo {
 
-    private var backend  = CovidApiClient.instance
-    private var liveSource  = LiveSource()
+    private val covidApiClient = CovidApiClient()
+    private val liveSource  = LiveSource()
 
 
     suspend fun getCountriesSummary() : List<CountryStats>  {
-        var list  = liveSource.getSummary()
-
+        var list  = covidApiClient.getSummary()
         return list.sortedByDescending {it.TotalConfirmed}
-
-        //return DummySource().getSummary()
     }
 
 }
