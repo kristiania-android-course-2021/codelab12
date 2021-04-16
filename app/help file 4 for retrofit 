@@ -57,7 +57,42 @@ interface CovidApi {
 
     }
 
-    4.3 Update the code as follows
+    4.3 Update the getSummary implementation as follows
+
+    fun getSummary(): List<CountryStats> {
+
+            var response = covidApi.getSummary().execute()
+
+            try {
+                if(response.isSuccessful) {
+                    response.body()?.Countries?.let { countries->
+                        return countries
+                    }
+                }
+            }
+            catch (ex: Exception){
+                ex.printStackTrace()
+            }
+
+            return ArrayList()
+     }
+
+5 Go to  CovidRepo class and switch the backend api implementation
+
+       5.1  Declare following in CovidRepo class
+
+        private val covidApiClient = CovidApiClient()
+
+        5.2 Update getCountriesSummary() function of  CovidRepo class as follows
+
+        suspend fun getCountriesSummary() : List<CountryStats>  {
+                var list  = covidApiClient.getSummary()
+                return list.sortedByDescending {it.TotalConfirmed}
+        }
+
+
+Run the code in emulator now!!
+
 
     
 
