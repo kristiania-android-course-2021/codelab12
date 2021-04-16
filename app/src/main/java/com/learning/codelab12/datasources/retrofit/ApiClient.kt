@@ -27,9 +27,11 @@ class ApiClient {
 
         if(result.isSuccessful){
             result.body()?.let { summaryResponse ->
-                return summaryResponse.Countries
+                summaryResponse.Countries?.let { countries->
+                    return countries
+                }
             }
         }
-        return ArrayList<CountryStats>()
+        return ArrayList()
     }
 }
