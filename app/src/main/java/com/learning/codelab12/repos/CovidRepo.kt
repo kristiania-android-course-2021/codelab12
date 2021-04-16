@@ -1,12 +1,12 @@
 package com.learning.codelab12.repos
 
-import com.learning.codelab12.datasources.retrofit.ApiClient
+import com.learning.codelab12.datasources.retrofit.CovidApiClient
 import com.learning.codelab12.datasources.LiveSource
 import com.learning.codelab12.models.CountryStats
 
 class CovidRepo {
 
-    private var backend  = ApiClient.instance
+    private var backend  = CovidApiClient.instance
     private var liveSource  = LiveSource()
 
 

@@ -5,7 +5,7 @@ import com.learning.codelab12.models.CountryStats
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ApiClient {
+class CovidApiClient {
 
     private var covidApi: CovidApi
     init {
