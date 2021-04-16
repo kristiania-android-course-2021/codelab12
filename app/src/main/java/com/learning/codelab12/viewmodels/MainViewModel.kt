@@ -11,14 +11,18 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel : ViewModel() {
     val liveStats = MutableLiveData<List<CountryStats>> (ArrayList<CountryStats>())
+    val isLoading = MutableLiveData<Boolean> (false)
+
     private var repo = CovidRepo()
 
     fun refresh() {
-        viewModelScope.launch {
 
+        isLoading.value = true
+        viewModelScope.launch {
             var result = withContext(Dispatchers.IO) {
                 repo.getCountriesSummary()
             }
+            isLoading.value = false
             liveStats.value = result
         }
     }

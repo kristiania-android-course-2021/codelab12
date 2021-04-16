@@ -1,0 +1,51 @@
+
+Adding a progress bar in the UI
+
+
+1. If you run the app you will notice there is a need for a progress bar to indicate app is loading data
+
+2. Let'ss add following in the activity_main.xml layout after RecyclerView
+
+   <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+3. Now go to MainViewModel class add another MutableLiveData
+
+    3.1. Declare a new MutableLiveData wrapping a Boolean value
+
+    val isLoading = MutableLiveData<Boolean> (false)
+
+    3.2 Change refresh function as follows
+
+    fun refresh() {
+            isLoading.value = true
+            viewModelScope.launch {
+                var result = withContext(Dispatchers.IO) {
+                    repo.getCountriesSummary()
+                }
+                isLoading.value = false
+                liveStats.value = result
+            }
+    }
+
+4. Go to Main Activity class
+
+    4.1 Use following code to observe isLoading of viewModel to update the progress bar visibility
+
+    viewModel.isLoading.observe(this, { loading->
+             binding.progressBar.visibility = if (loading) View.VISIBLE else View.INVISIBLE
+    })
+
+    Above will update the visibility of progress bar view based on the observable value of isLoading
+    When screen is being refresh value of isLoading will be changing from true to false because of
+    the code we have written in  refresh function of MainViewModel
+
+
+

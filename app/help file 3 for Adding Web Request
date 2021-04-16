@@ -1,0 +1,164 @@
+
+
+
+Adding Endpoint (https://api.covid19api.com/summary) using HttpURLConnection and JSONObject Parsing
+
+1. Add internet permission in the AndroidManifest.xml
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+2. Add LiveSource In the datasources package
+
+class LiveSource {
+
+
+    private fun get(endpointURL: String): HTTPResponse {
+
+        val url = URL(endpointURL)
+        val connection = url.openConnection() as HttpURLConnection
+        try {
+            connection.requestMethod = "GET"
+
+            connection.connect()
+
+            val stream = if (connection.responseCode in 200..300) connection.inputStream else connection.errorStream
+
+            val responseBody = try {
+                stream.bufferedReader(Charsets.UTF_8).use { it.readText() }
+            } catch (e: Throwable) {
+                ""
+            }
+
+            return HTTPResponse(connection.responseCode, responseBody)
+        } catch (e: Throwable) {
+            return HTTPResponse(connection.responseCode, "")
+        } finally {
+            connection.disconnect()
+        }
+    }
+
+
+    class HTTPResponse ( val statusCode: Int, val body : String) {
+        val isSuccessful = statusCode in 200..300
+    }
+}
+
+
+3. Add function getSummary() : List<CountryStats> in the class LiveSource
+
+
+
+    fun getSummary() : List<CountryStats> {
+       val list = ArrayList<CountryStats>()
+
+       //Todo 3.1 call endpoint https://api.covid19api.com/summary
+       //Todo 3.2 Handle the response
+       //TODO 3.3. parse the results into list
+
+       return  list
+
+    }
+
+
+    3.1 & 3.2 Call endpoint and check the response
+
+    fun getSummary() : List<CountryStats> {
+           val list = ArrayList<CountryStats>()
+
+           val  response = get("https://api.covid19api.com/summary")
+
+           if(response.isSuccessful) {
+                //TODO 3.3. parse the results into list
+
+           }
+           return  list
+      }
+
+      3.3 Parse the response using JSONObject
+
+
+       fun getSummary() : List<CountryStats> {
+
+              val list = ArrayList<CountryStats>()
+
+              val  response = get("https://api.covid19api.com/summary")
+
+              if(response.isSuccessful) {
+
+                   var countries = JSONObject(response.body).getJSONArray("Countries")
+
+                   for (i in 0 until countries.length()){
+                          list.add(
+                                   CountryStats(
+                                   countries.getJSONObject(i).getString("Country"),
+                                   countries.getJSONObject(i).getString("CountryCode"),
+                                   countries.getJSONObject(i).getInt("TotalConfirmed")))
+
+                   }
+
+              }
+
+              return list
+          }
+
+4.    Replace DummySource().getSummary() in CovidRepo
+
+    4.1 Add LiveSource in CovidRepo class
+
+    private val backend  = LiveSource()
+
+    4.2 replace DummySource().getSummary() with backend.getSummary()
+
+
+Run the code in emulator
+
+Observe data is not ordered by TotalConfirmed cases
+
+5. Sort the result in ascending using function sortedByDescending of list
+
+
+Run the code in emulator
+
+
+6. Sometime odd times https://api.covid19api.com/summary returns no Countries JSON array
+
+    6.1 To deal with that case replace following line  getSummary of LiveSource class
+
+        Replace this
+         var countries = JSONObject(response.body).getJSONArray("Countries") // getJSONArray
+
+        With
+         var countries = JSONObject(response.body).optJSONArray("Countries") // optJSONArray i.e. array might be null
+
+    6.2 Move for loop under
+
+    countries?.let { // so that we have null safety before using countries array
+
+    }
+
+    Entire function will look as follows
+
+
+    fun getSummary() : List<CountryStats> {
+
+            val list = ArrayList<CountryStats>()
+            var response = get("https://api.covid19api.com/summary")
+
+            if(response.isSuccessful) {
+                var countries = JSONObject(response.body).optJSONArray("Countries")
+                countries?.let {
+                    for (i in 0 until countries.length()){
+                        list.add(
+                                CountryStats(
+                                        countries.getJSONObject(i).getString("Country"),
+                                        countries.getJSONObject(i).getString("CountryCode"),
+                                        countries.getJSONObject(i).getInt("TotalConfirmed")))
+
+                    }
+                }
+            }
+            return  list
+    }
+
+
+
