@@ -29,8 +29,39 @@ interface CovidApi {
 
 }
 
-4. Adding CovidApiClient
+4. Adding CovidApiClient class under package retrofit
 
+    4.1 Add class
 
+    class CovidApiClient {
+
+        private var covidApi: CovidApi
+        init {
+            val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create()
+
+            val retrofit = Retrofit.Builder()
+                .addConverterFactory(
+                    GsonConverterFactory.create()
+                )
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .baseUrl("https://api.covid19api.com/")
+                .build()
+
+            covidApi = retrofit.create(CovidApi::class.java)
+        }
+    }
+
+    4.2 Add function getSummary(): List<CountryStats>
+
+    fun getSummary(): List<CountryStats> {
+
+    }
+
+    4.3 Update the code as follows
 
     
+
+
+
+
+
