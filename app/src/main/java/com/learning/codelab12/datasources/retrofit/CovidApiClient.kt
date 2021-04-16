@@ -23,15 +23,20 @@ class CovidApiClient {
     }
 
     fun getSummary(): List<CountryStats> {
-        var result = covidApi.getSummary().execute()
 
-        if(result.isSuccessful){
-            result.body()?.let { summaryResponse ->
-                summaryResponse.Countries?.let { countries->
+        var response = covidApi.getSummary().execute()
+
+        try {
+            if(response.isSuccessful) {
+                response.body()?.Countries?.let { countries->
                     return countries
                 }
             }
         }
+        catch (ex: Exception){
+            ex.printStackTrace()
+        }
+
         return ArrayList()
     }
 }
