@@ -1,4 +1,4 @@
-package com.learning.codelab12.datasources
+package com.learning.codelab12.datasources.retrofit
 
 import com.google.gson.GsonBuilder
 import com.learning.codelab12.models.CountryStats
@@ -22,7 +22,7 @@ class ApiClient {
     private var api: CovidApi
 
     companion object{
-        val instance  : ApiClient  by lazy {
+        val instance  : ApiClient by lazy {
             ApiClient()
         }
     }

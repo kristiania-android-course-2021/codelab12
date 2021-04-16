@@ -1,7 +1,6 @@
 package com.learning.codelab12.repos
 
-import com.learning.codelab12.datasources.ApiClient
-import com.learning.codelab12.datasources.DummySource
+import com.learning.codelab12.datasources.retrofit.ApiClient
 import com.learning.codelab12.datasources.LiveSource
 import com.learning.codelab12.models.CountryStats
 

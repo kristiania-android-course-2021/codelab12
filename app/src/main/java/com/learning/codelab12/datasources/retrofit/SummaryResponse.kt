@@ -1,4 +1,4 @@
-package com.learning.codelab12.datasources.response
+package com.learning.codelab12.datasources.retrofit
 
 import com.learning.codelab12.models.CountryStats
 
