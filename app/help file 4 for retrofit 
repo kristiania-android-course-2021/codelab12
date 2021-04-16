@@ -1,10 +1,16 @@
 
 Adding retrofit for backend api calling
 
-1. Adding retrofit dependencies in the app gradle
+1. Adding Retrofit dependencies in the app gradle
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
 
 
-2.
+2. Now add a package "retrofit" under datasources
+
+    2.1 Add SummaryResponse class under retrofit package
+
+    data class SummaryResponse(var Countries: List<CountryStats>?)
+
+    
