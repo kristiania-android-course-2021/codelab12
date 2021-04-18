@@ -45,6 +45,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     // Coroutines view-model and live-data.
+
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"

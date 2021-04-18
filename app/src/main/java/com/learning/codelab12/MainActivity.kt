@@ -2,12 +2,9 @@ package com.learning.codelab12
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.learning.codelab12.adapters.CountryListAdapter
 import com.learning.codelab12.databinding.ActivityMainBinding
-import com.learning.codelab12.datasources.DummySource
-import com.learning.codelab12.models.CountryStats
 import com.learning.codelab12.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -29,10 +26,6 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.liveStats.observe(this, { list->
             listAdapter.update(list)
-        })
-
-        viewModel.isLoading.observe(this, { loading->
-            binding.progressBar.visibility = if (loading) View.VISIBLE else View.INVISIBLE
         })
 
     }
