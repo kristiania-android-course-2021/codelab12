@@ -26,11 +26,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.liveStats.observe(this, { newList->
             listAdapter.update(newList)
         })
-
-        viewModel.isLoading.observe(this, { loading->
-            binding.progressBar.visibility = if(loading) View.VISIBLE else View.INVISIBLE
-        })
-
     }
 
     override fun onResume() {
