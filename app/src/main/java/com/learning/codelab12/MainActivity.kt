@@ -6,12 +6,11 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.learning.codelab12.adapters.CountryListAdapter
 import com.learning.codelab12.databinding.ActivityMainBinding
+import com.learning.codelab12.datasources.DummySource
 import com.learning.codelab12.models.CountryStats
-import com.learning.codelab12.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel = MainViewModel()
     private var listAdapter = CountryListAdapter(ArrayList<CountryStats>())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,18 +22,6 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = listAdapter
 
-        viewModel.liveStats.observe(this, { newList->
-            listAdapter.update(newList)
-        })
-
-        viewModel.isLoading.observe(this, { loading->
-            binding.progressBar.visibility = if(loading) View.VISIBLE else View.INVISIBLE
-        })
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.refresh()
+        listAdapter.update(DummySource().getSummary())
     }
 }
